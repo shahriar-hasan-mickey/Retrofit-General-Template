@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
                 binding.output.append("Latitude : "+ data.getCoord().getLat() +"\n");
                 binding.output.append("Longitude : "+ data.getCoord().getLon() +"\n");
                 binding.output.append("Weather : "+ data.getWeather().get(0).getId());
+
+                /**
+                 * if list or array used then the following could be used :
+                 **/
 //                for (int i = 0; i < Objects.requireNonNull(data).size(); i++){
 ////                    binding.output.append("SL No: "+data.get(i).getId()+"\nTitle: "+data.get(i).getTitle()+"\n\n\n");
 //                    binding.output.append("COORDINATES: "+ data.get(i).getCoord().getLat()+"\n\n");
