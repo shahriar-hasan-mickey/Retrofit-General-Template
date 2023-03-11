@@ -19,8 +19,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
+//    Declaring the viewBind :
     private ActivityMainBinding binding;
-//    String BASE_URL = "https://jsonplaceholder.typicode.com/";
+
+
+
+//    setting up the baseUrl and appId :
     String BASE_URL = "https://samples.openweathermap.org/data/2.5/";
     String APP_ID = "b6907d289e10d714a6e88b30761fae22";
     @Override
@@ -28,30 +32,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#009933")));
 
+//        Instantiating the viewBind :
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.output.setText("");
 
+
+//        Building the url using retrofit with the additional converter from json data type :
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+//        Creating an instance of the API type interface :
         API api = retrofit.create(API.class);
 
-//        Call<List<Model>> call = api.modelList();
+//        for callback : with the query parameters' value
         Call <Model> call = api.modelList("London", APP_ID);
-//        call.enqueue(new Callback<List<Model>>() {
-//        Toast.makeText(this, "here", Toast.LENGTH_SHORT).show();
         call.enqueue(new Callback<Model>() {
             @Override
             public void onResponse(@NonNull Call<Model> call, @NonNull Response<Model> response) {
 
                 if(response.isSuccessful()){
                     Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(MainActivity.this, "WHY FAILED", Toast.LENGTH_SHORT).show();
                 }
+
+//                Instantiating a predefined model type data
                 Model data = response.body();
                 assert data != null;
                 binding.output.append("Humidity : "+ data.getMain().getHumidity() +"\n");
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
+                Toast.makeText(MainActivity.this, "FAILED", Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
 
